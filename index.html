@@ -1,0 +1,755 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>성운과 성단</title>
+<meta name="description" content="중학교 3학년 과학 – 성운과 성단 학습">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Do+Hyeon&family=IBM+Plex+Sans+KR:wght@400;500;700&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+:root{color-scheme:light}
+html{-webkit-text-size-adjust:100%}
+body{margin:0}
+img{max-width:100%}
+[hidden]{display:none!important}
+
+/* Layout: one reading column of numbered lesson steps under a sticky step bar; the classification sky cards are the single bold element. */
+:root{
+  --bg:#F2F3F8; --surface:#FFFFFF; --ink:#1A1E33; --muted:#5B6185; --line:#DCDFEA;
+  --accent:#2F45C4; --accent-ink:#FFFFFF; --accent-soft:#E6E9FA;
+  --good:#1D7F52; --good-soft:#E2F3EA; --bad:#B93A33; --bad-soft:#F8E5E3; --warn:#9A6400; --warn-soft:#FBF0D9;
+  --display:"Do Hyeon","IBM Plex Sans KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  --body:"IBM Plex Sans KR","Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0F1224; --surface:#181C35; --ink:#E9EBF6; --muted:#9CA2C4; --line:#2B3152;
+  --accent:#8FA2FF; --accent-ink:#0F1224; --accent-soft:#232A52;
+  --good:#5FD39A; --good-soft:#163527; --bad:#FF8A80; --bad-soft:#3A1E22; --warn:#F2C060; --warn-soft:#3A2F14;
+  color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0F1224; --surface:#181C35; --ink:#E9EBF6; --muted:#9CA2C4; --line:#2B3152;
+  --accent:#8FA2FF; --accent-ink:#0F1224; --accent-soft:#232A52;
+  --good:#5FD39A; --good-soft:#163527; --bad:#FF8A80; --bad-soft:#3A1E22; --warn:#F2C060; --warn-soft:#3A2F14;
+  color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.7;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 64px}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+h1,h2,h3{font-family:var(--display);font-weight:400;text-wrap:balance;margin:0;line-height:1.25}
+p{margin:0}
+button,input,textarea,select{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.wrap{max-width:780px;margin:0 auto;display:flex;flex-direction:column;gap:20px}
+
+/* header */
+.hero{padding-block:28px 4px;display:flex;flex-direction:column;gap:10px}
+.eyebrow{font-size:13px;letter-spacing:.08em;color:var(--muted);font-weight:500}
+.hero h1{font-size:clamp(34px,7vw,52px)}
+.hero p{color:var(--muted);max-width:60ch}
+.mode{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.pill{display:inline-flex;align-items:center;gap:6px;font-size:13px;padding:3px 10px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--muted)}
+.pill.good{background:var(--good-soft);color:var(--good);border-color:transparent}
+.pill.warn{background:var(--warn-soft);color:var(--warn);border-color:transparent}
+.pill.bad{background:var(--bad-soft);color:var(--bad);border-color:transparent}
+.pill.acc{background:var(--accent-soft);color:var(--accent);border-color:transparent}
+
+/* stepper */
+.steps{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding-block:10px;border-bottom:1px solid var(--line)}
+.steps ol{list-style:none;margin:0 auto;padding:0;max-width:780px;display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px}
+.steps button{width:100%;border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:6px 4px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:0;font-size:12px;line-height:1.3;color:var(--muted);min-width:0}
+.steps button b{font-family:var(--mono);font-size:13px;color:var(--ink)}
+.steps button span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.steps button.done{background:var(--good-soft);border-color:transparent;color:var(--good)}
+.steps button.done b{color:var(--good)}
+@media (max-width:560px){.steps button span{display:none}.steps button{padding:8px 2px}}
+
+/* sections */
+section.card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:24px;display:flex;flex-direction:column;gap:16px;scroll-margin-top:84px}
+@media (max-width:560px){section.card{padding:18px}}
+.sec-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+.sec-num{font-family:var(--mono);font-size:14px;color:var(--accent)}
+.sec-head h2{font-size:28px}
+.sec-head .pill{margin-left:auto}
+.lead{color:var(--muted)}
+.goals{margin:0;padding-left:1.4em;display:flex;flex-direction:column;gap:8px}
+.goals li::marker{color:var(--accent);font-family:var(--mono)}
+
+/* quiz */
+.q{display:flex;flex-direction:column;gap:10px;padding-block:14px;border-top:1px dashed var(--line)}
+.q:first-of-type{border-top:0;padding-top:0}
+.q-text{font-weight:500}
+.q-text small{font-family:var(--mono);color:var(--accent);margin-right:6px}
+.opts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+@media (max-width:560px){.opts{grid-template-columns:1fr}}
+.opt{text-align:left;border:1.5px solid var(--line);background:var(--bg);border-radius:10px;padding:10px 12px;cursor:pointer;line-height:1.45;min-width:0}
+.opt:hover:not(:disabled){border-color:var(--accent)}
+.opt.sel{border-color:var(--accent);background:var(--accent-soft)}
+.opt.right{border-color:var(--good);background:var(--good-soft);color:var(--good)}
+.opt.wrong{border-color:var(--bad);background:var(--bad-soft);color:var(--bad)}
+.opt:disabled{cursor:default}
+.explain{font-size:14px;color:var(--muted);background:var(--bg);border-radius:10px;padding:10px 12px}
+.explain b{color:var(--ink)}
+
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.btn{border:0;background:var(--accent);color:var(--accent-ink);padding:10px 18px;border-radius:10px;cursor:pointer;font-weight:500}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn.ghost{background:transparent;color:var(--accent);border:1.5px solid var(--accent)}
+.btn.small{padding:6px 12px;font-size:14px}
+.result{font-weight:500}
+
+/* blanks */
+.concept{display:flex;flex-direction:column;gap:14px}
+.concept p{line-height:2.2}
+.blank{display:inline-block;width:7.2em;max-width:100%;border:0;border-bottom:2px solid var(--accent);background:var(--accent-soft);border-radius:6px 6px 0 0;padding:0 6px;text-align:center;font-weight:500}
+.blank.short{width:4.6em}
+.blank.right{border-color:var(--good);background:var(--good-soft);color:var(--good)}
+.blank.wrong{border-color:var(--bad);background:var(--bad-soft);color:var(--bad)}
+.hint{font-size:13px;color:var(--muted)}
+
+.tbl-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px}
+table{border-collapse:collapse;width:100%;font-size:15px}
+th,td{padding:9px 12px;text-align:left;border-bottom:1px solid var(--line);white-space:nowrap}
+th{font-size:13px;color:var(--muted);font-weight:500;background:var(--bg)}
+tr:last-child td{border-bottom:0}
+td.num{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.dot{display:inline-block;width:14px;height:14px;border-radius:50%;vertical-align:-2px;margin-right:8px;border:1px solid var(--line)}
+
+/* video */
+.video-box{border-radius:12px;overflow:hidden;background:#000;aspect-ratio:16/9;max-width:100%}
+.video-box video{width:100%;height:100%;display:block}
+.link-card{display:flex;gap:14px;align-items:center;padding:16px;border:1.5px solid var(--line);border-radius:12px;text-decoration:none;color:var(--ink);background:var(--bg)}
+.link-card:hover{border-color:var(--accent)}
+.play{flex:none;width:48px;height:48px;border-radius:50%;background:var(--accent);display:grid;place-items:center}
+.play::after{content:"";border-left:14px solid var(--accent-ink);border-top:9px solid transparent;border-bottom:9px solid transparent;margin-left:4px}
+.link-card div{min-width:0}
+.link-card small{display:block;color:var(--muted);word-break:break-all}
+.empty{padding:22px;border:1.5px dashed var(--line);border-radius:12px;color:var(--muted);text-align:center}
+label.check{display:flex;gap:10px;align-items:center;cursor:pointer}
+label.check input{width:20px;height:20px;accent-color:var(--good)}
+
+/* forms */
+.field{display:flex;flex-direction:column;gap:4px;min-width:0;flex:1 1 180px}
+.field label{font-size:13px;color:var(--muted);font-weight:500}
+.input,textarea.input{border:1.5px solid var(--line);background:var(--bg);border-radius:10px;padding:9px 12px;width:100%}
+textarea.input{min-height:70px;resize:vertical}
+
+/* submit */
+.checklist{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px}
+.checklist li{display:flex;gap:8px;align-items:center;font-size:14px;padding:8px 10px;border-radius:10px;background:var(--bg);color:var(--muted)}
+.checklist li.ok{background:var(--good-soft);color:var(--good)}
+.status{padding:14px 16px;border-radius:12px;display:flex;flex-direction:column;gap:4px}
+.status.wait{background:var(--warn-soft);color:var(--warn)}
+.status.ok{background:var(--good-soft);color:var(--good)}
+.status.err{background:var(--bad-soft);color:var(--bad)}
+.status .comment{color:var(--ink);background:var(--surface);border-radius:8px;padding:8px 10px;margin-top:4px}
+
+
+/* video embed */
+.video-list{display:flex;flex-direction:column;gap:22px}
+.video-item{display:flex;flex-direction:column;gap:10px}
+.video-box iframe{width:100%;height:100%;border:0;display:block}
+
+/* completion dialog */
+dialog#doneDialog{border:0;border-radius:20px;padding:0;background:var(--surface);color:var(--ink);width:min(420px,calc(100vw - 32px));box-shadow:0 24px 60px rgba(10,14,40,.35)}
+dialog#doneDialog::backdrop{background:rgba(10,14,40,.55)}
+.done-inner{padding:28px 24px 24px;display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center}
+.done-star{width:76px;height:76px;border-radius:50%;background:radial-gradient(circle at 38% 35%,#fff 0%,#BCD3FF 40%,#7FA6FF 72%,rgba(127,166,255,0) 100%);box-shadow:0 0 34px 8px rgba(127,166,255,.5);animation:pop .5s ease-out}
+@keyframes pop{from{transform:scale(.4);opacity:.2}to{transform:scale(1);opacity:1}}
+@media (prefers-reduced-motion:reduce){.done-star{animation:none}}
+#doneTitle{font-size:34px}
+.done-sub{color:var(--good);font-weight:500}
+.done-grid{display:grid;grid-template-columns:auto 1fr;gap:6px 16px;margin:4px 0 0;padding:14px 16px;background:var(--bg);border-radius:12px;width:100%;text-align:left;font-size:15px}
+.done-grid dt{color:var(--muted)}
+.done-grid dd{margin:0;font-weight:500;font-variant-numeric:tabular-nums}
+.done-inner .btn{width:100%;margin-top:6px}
+
+/* fun facts */
+.facts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+@media (max-width:620px){.facts{grid-template-columns:1fr}}
+.fact{display:flex;gap:12px;padding:16px;border-radius:14px;background:var(--bg);border:1.5px solid transparent;min-width:0}
+.fact.read{border-color:var(--good);background:var(--good-soft)}
+.fact-num{flex:none;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-family:var(--mono);font-size:14px;background:var(--accent-soft);color:var(--accent)}
+.fact.read .fact-num{background:var(--good);color:var(--surface)}
+.fact-body{display:flex;flex-direction:column;gap:8px;min-width:0}
+.fact-body h4{margin:0;font-family:var(--display);font-weight:400;font-size:19px;line-height:1.3}
+.fact-body p{font-size:15px;line-height:1.65}
+.fact-body .check{font-size:14px;font-weight:500}
+
+/* classification lab */
+.lab-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px}
+.sky{display:flex;flex-direction:column;gap:8px;padding:10px;border-radius:14px;background:var(--bg);border:1.5px solid transparent;min-width:0}
+.sky.right{border-color:var(--good);background:var(--good-soft)}
+.sky.wrong{border-color:var(--bad);background:var(--bad-soft)}
+.sky-cap{display:flex;justify-content:space-between;align-items:center;font-size:13px;color:var(--muted)}
+.sky-cap b{font-family:var(--mono);color:var(--ink);font-size:14px}
+.sky canvas{width:100%;aspect-ratio:3/2;border-radius:10px;display:block;background:#05060F;max-width:100%}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{border:1.5px solid var(--line);background:var(--surface);border-radius:999px;padding:4px 10px;font-size:13px;cursor:pointer;line-height:1.4}
+.chip:hover:not(:disabled){border-color:var(--accent)}
+.chip.sel{border-color:var(--accent);background:var(--accent-soft);color:var(--accent);font-weight:500}
+.chip.right{border-color:var(--good);background:var(--good);color:var(--surface)}
+.chip.wrong{border-color:var(--bad);background:var(--bad-soft);color:var(--bad)}
+.chip:disabled{cursor:default}
+.sky-why{font-size:13px;line-height:1.55;color:var(--ink)}
+.kind-tag{display:inline-block;font-size:12px;padding:1px 8px;border-radius:999px;background:var(--accent-soft);color:var(--accent);font-weight:500;margin-right:4px}
+td.wrap{white-space:normal;min-width:180px}
+
+/* comparison table (one-line summary) */
+table.cmp{table-layout:fixed}
+@media (max-width:560px){table.cmp th,table.cmp td{padding:8px 6px;font-size:14px}table.cmp thead th:first-child,table.cmp tbody th{width:52px!important;font-size:12px!important}table.cmp .blank.short{width:4.2em}}
+table.cmp th,table.cmp td{white-space:normal;vertical-align:middle;line-height:2}
+table.cmp thead th{font-size:16px;color:var(--ink);text-align:center}
+table.cmp thead th:first-child,table.cmp tbody th{width:84px;font-size:14px;color:var(--muted);font-weight:500;background:var(--bg);text-align:center}
+table.cmp td{text-align:center}
+table.cmp td:nth-child(2){text-align:left}
+table.cmp tr:nth-child(3) td{text-align:left}
+table.cmp td:has(> .blank:only-child){text-align:center}
+.cmp-sky{width:100%;max-width:220px;aspect-ratio:3/2;border-radius:8px;display:block;margin:0 auto;background:#05060F}
+
+/* fun-fact photos */
+.fact{display:grid;grid-template-columns:30px minmax(0,1fr);align-items:start;column-gap:12px;row-gap:12px}
+.fact-fig{grid-column:1/-1;margin:0;display:flex;flex-direction:column;gap:4px}
+.fact-fig img,.fact-fig canvas{width:100%;aspect-ratio:16/10;object-fit:cover;border-radius:10px;background:#05060F;display:block;max-width:100%}
+.fact-fig figcaption{font-size:11.5px;color:var(--muted);line-height:1.4}
+</style>
+<!-- 선생님 설정 파일: 영상 주소는 config.js 에서 바꾸세요 -->
+<script src="config.js"></script>
+</head>
+<body>
+
+<div class="wrap">
+  <header class="hero">
+    <span class="eyebrow">중학교 3학년 과학 · 은하와 우주</span>
+    <h1>성운과 성단</h1>
+    <p>망원경으로 밤하늘을 보면 구름처럼 뿌옇게 보이는 것이 있어요. 그 정체는 무엇일까요? 순서대로 학습하고, 마지막에 완료 화면을 선생님께 보여 드리세요.</p>
+  </header>
+</div>
+
+<nav class="steps" aria-label="학습 단계">
+  <ol id="stepper"></ol>
+</nav>
+
+<main class="wrap" style="margin-top:20px">
+
+  <!-- 1 학습목표 -->
+  <section class="card" id="s-goals">
+    <div class="sec-head"><span class="sec-num">01</span><h2>학습목표</h2></div>
+    <ol class="goals">
+      <li><b>성운</b>과 <b>성단</b>을 구별하여 설명할 수 있다.</li>
+      <li>성운과 성단의 종류를 알고, 각각의 특징을 설명할 수 있다.</li>
+    </ol>
+    <label class="check"><input type="checkbox" id="goalRead"> 학습목표를 읽었어요</label>
+  </section>
+
+  <!-- 2 도입퀴즈 -->
+  <section class="card" id="s-intro">
+    <div class="sec-head"><span class="sec-num">02</span><h2>도입퀴즈</h2><span class="pill" id="introPill">0 / 3</span></div>
+    <p class="lead">생활 속 경험으로 생각해 봐요. 하나를 고르면 바로 정답을 알려 줘요.</p>
+    <div id="introQs"></div>
+  </section>
+
+  <!-- 3 영상 -->
+  <section class="card" id="s-video">
+    <div class="sec-head"><span class="sec-num">03</span><h2>영상 학습</h2></div>
+    <div id="videoArea"></div>
+    <label class="check"><input type="checkbox" id="videoWatched"> 영상을 끝까지 시청했어요</label>
+  </section>
+
+  <!-- 4 개념 -->
+  <section class="card" id="s-concept">
+    <div class="sec-head"><span class="sec-num">04</span><h2>개념 학습</h2><span class="pill" id="conceptPill">빈칸 10개</span></div>
+
+    <h3 style="font-size:20px">성운</h3>
+    <div class="concept">
+      <p>① 별과 별 사이에 분포하는 가스와 먼지를 <input class="blank" data-b="c1" aria-label="빈칸 1">이라고 한다.</p>
+      <p>② 성간 물질이 모여 있어 구름처럼 보이는 천체를 <input class="blank short" data-b="c2" aria-label="빈칸 2">이라고 한다.</p>
+      <p>③ 뒤쪽에서 오는 별빛을 차단하여 어둡게 보이는 성운은 <input class="blank short" data-b="c3" aria-label="빈칸 3"> 성운이다.</p>
+      <p>④ 주변의 별빛을 흡수하여 가열되면서 스스로 빛을 내는 성운은 <input class="blank short" data-b="c4" aria-label="빈칸 4"> 성운이다.</p>
+      <p>⑤ 성간 물질이 주변의 별빛을 반사하여 밝게 보이는 성운은 <input class="blank short" data-b="c5" aria-label="빈칸 5"> 성운이다.</p>
+    </div>
+
+    <h3 style="font-size:20px">성단</h3>
+    <div class="concept">
+      <p>⑥ 수많은 별들이 모여 있는 집단을 <input class="blank short" data-b="c6" aria-label="빈칸 6">이라고 한다.</p>
+      <p>⑦ 수십~수만 개의 별들이 비교적 듬성듬성하게 모여 있는 성단은 <input class="blank short" data-b="c7" aria-label="빈칸 7"> 성단이며, 주로 온도가 높아 <input class="blank short" data-b="c8" aria-label="빈칸 8">색을 띠는 별들로 이루어져 있다.</p>
+      <p>⑧ 수만~수십만 개의 별들이 공 모양으로 빽빽하게 모여 있는 성단은 <input class="blank short" data-b="c9" aria-label="빈칸 9"> 성단이며, 주로 온도가 낮아 <input class="blank short" data-b="c10" aria-label="빈칸 10">색을 띠는 별들로 이루어져 있다.</p>
+    </div>
+    <div class="row">
+      <button class="btn" id="conceptCheck" type="button">채점하기</button>
+      <button class="btn ghost" id="conceptReveal" type="button" hidden>정답 보기</button>
+      <span class="result" id="conceptResult"></span>
+    </div>
+
+    <hr class="divider">
+    <div class="sec-head"><h3 style="font-size:22px">탐구: 우주 사진 분류하기</h3><span class="pill" id="labPill">0 / 5</span></div>
+    <p class="lead">밤하늘 모습 A~E를 보고 어떤 성운 또는 성단인지 골라 보세요. 모두 고른 뒤 ‘분류 확인’을 누르세요.</p>
+    <div class="lab-grid" id="labGrid"></div>
+    <div class="row">
+      <button class="btn" id="labCheck" type="button" disabled>분류 확인</button>
+      <button class="btn ghost" id="labRetry" type="button" hidden>다시 분류하기</button>
+      <span class="result" id="labResult"></span>
+    </div>
+    <p class="hint">그림은 특징을 알아보기 쉽게 그린 모형이에요. 실제 사진은 영상이나 교과서에서 확인해 보세요.</p>
+
+    <h3 style="font-size:20px">성운과 성단 정리표</h3>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>구분</th><th>종류</th><th>특징</th><th>예</th></tr></thead>
+        <tbody id="sumTable"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 5 정리퀴즈 -->
+  <section class="card" id="s-final">
+    <div class="sec-head"><span class="sec-num">05</span><h2>정리퀴즈</h2><span class="pill" id="finalPill">5문항</span></div>
+    <p class="lead">혼자 힘으로 풀어 보세요. 모두 고른 뒤 ‘채점하기’를 누르면 정답과 해설이 나와요.</p>
+    <div id="finalQs"></div>
+    <div class="row">
+      <button class="btn" id="finalCheck" type="button" disabled>채점하기</button>
+      <button class="btn ghost" id="finalRetry" type="button" hidden>다시 풀기</button>
+      <span class="result" id="finalResult"></span>
+    </div>
+  </section>
+
+  <!-- 6 한줄 정리 -->
+  <section class="card" id="s-oneline">
+    <div class="sec-head"><span class="sec-num">06</span><h2>오늘의 한줄 정리</h2><span class="pill" id="onePill">빈칸 10개</span></div>
+    <p class="lead">두 성단을 비교하는 표의 빈칸을 채워 오늘 배운 내용을 정리해 보세요.</p>
+    <div class="tbl-wrap">
+      <table class="cmp">
+        <thead><tr><th scope="col">구분</th><th scope="col">(<input class="blank short" data-o="t1" aria-label="왼쪽 성단 종류">) 성단</th><th scope="col">(<input class="blank short" data-o="t2" aria-label="오른쪽 성단 종류">) 성단</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">모습</th><td><canvas class="cmp-sky" data-sky="open" role="img" aria-label="별들이 듬성듬성 모인 성단 그림"></canvas></td><td><canvas class="cmp-sky" data-sky="globular" role="img" aria-label="별들이 공 모양으로 빽빽하게 모인 성단 그림"></canvas></td></tr>
+          <tr><th scope="row">정의</th><td><u>수십 개~수만 개</u>의 별들이 엉성하게 (<input class="blank short" data-o="t3" aria-label="정의 빈칸 왼쪽">) 있는 성단</td><td><u>수만 개~수십만 개</u>의 별들이 빽빽하게 (<input class="blank short" data-o="t4" aria-label="정의 빈칸 오른쪽">) 모양으로 모여 있는 성단</td></tr>
+          <tr><th scope="row">색깔</th><td><input class="blank short" data-o="t5" aria-label="색깔 왼쪽"></td><td><input class="blank short" data-o="t6" aria-label="색깔 오른쪽"></td></tr>
+          <tr><th scope="row">표면 온도</th><td><input class="blank short" data-o="t7" aria-label="표면 온도 왼쪽"></td><td><input class="blank short" data-o="t8" aria-label="표면 온도 오른쪽"></td></tr>
+          <tr><th scope="row">나이</th><td><input class="blank short" data-o="t9" aria-label="나이 왼쪽"></td><td><input class="blank short" data-o="t10" aria-label="나이 오른쪽"></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="hint">나이 칸은 ‘젊다’ 또는 ‘많다’처럼 써 보세요.</p>
+    <div class="row">
+      <button class="btn" id="oneCheck" type="button">채점하기</button>
+      <span class="result" id="oneResult"></span>
+    </div>
+    <hr class="divider">
+    <div class="sec-head"><h3 style="font-size:22px">재미있는 우주 이야기</h3><span class="pill" id="factPill">0 / 4 읽음</span></div>
+    <p class="lead">짧은 이야기를 읽고 ‘읽었어요’에 체크해 보세요.</p>
+    <div class="facts" id="facts"></div>
+  </section>
+
+  <!-- 7 확인 -->
+  <section class="card" id="s-submit">
+    <div class="sec-head"><span class="sec-num">07</span><h2>선생님 확인받기</h2></div>
+    <p class="lead">모든 단계를 마치고 이름과 학번을 쓰면 완료 화면이 떠요. 그 화면을 선생님께 보여 드리세요.</p>
+    <ul class="checklist" id="checklist"></ul>
+    <div class="row">
+      <div class="field"><label for="stuName">이름</label><input class="input" id="stuName" placeholder="홍길동" autocomplete="name"></div>
+      <div class="field"><label for="stuNo">학번</label><input class="input" id="stuNo" placeholder="30312" inputmode="numeric"></div>
+    </div>
+    <div class="row">
+      <button class="btn" id="submitBtn" type="button">학습 완료하기</button>
+      <span class="hint" id="submitHint"></span>
+    </div>
+    <div id="statusBox"></div>
+  </section>
+</main>
+
+<!-- 완료 팝업 -->
+<dialog id="doneDialog" aria-labelledby="doneTitle">
+  <div class="done-inner">
+    <div class="done-star" aria-hidden="true"></div>
+    <h2 id="doneTitle">학습 완료!</h2>
+    <p class="done-sub" id="doneSub">오늘의 학습을 모두 마쳤어요.</p>
+    <dl class="done-grid" id="doneGrid"></dl>
+    <p class="hint" id="doneNote">이 화면을 선생님께 보여 드리고 확인을 받으세요.</p>
+    <button class="btn" id="doneClose" type="button">확인</button>
+  </div>
+</dialog>
+
+<script>
+(() => {
+"use strict";
+/* ---------- content ---------- */
+const STEPS = [
+  {id:"s-goals",label:"목표"},{id:"s-intro",label:"도입"},{id:"s-video",label:"영상"},
+  {id:"s-concept",label:"개념"},{id:"s-final",label:"정리퀴즈"},{id:"s-oneline",label:"한줄"},{id:"s-submit",label:"확인"}];
+
+const INTRO = [
+  {q:"망원경으로 밤하늘을 보면 구름처럼 뿌옇게 보이는 것이 있어요. 이것의 정체는 무엇일까요?",
+   o:["지구 하늘에 떠 있는 구름","별과 별 사이의 가스와 먼지가 모인 것","망원경 렌즈에 묻은 얼룩","비행기가 남긴 연기"],a:1,
+   e:"별과 별 사이에는 가스와 먼지가 있어요. 이것이 모여 있으면 구름처럼 보인답니다."},
+  {q:"밤하늘의 별들은 모두 하나씩 따로 떨어져 있다. (O / X)",
+   o:["O","X"],a:1,
+   e:"수많은 별들이 무리를 이루어 모여 있기도 해요. 오늘은 이런 별의 무리도 배워요."},
+  {q:"어두운 방에서 켜진 손전등 앞에 두꺼운 종이를 대면 어떻게 보일까요?",
+   o:["종이가 뒤쪽 빛을 가려 그 부분이 어둡게 보인다","빛이 더 밝아진다","빛이 파란색으로 바뀐다","아무 변화가 없다"],a:0,
+   e:"뒤쪽 빛을 가리면 어둡게 보여요. 우주에도 뒤쪽 별빛을 가려서 어둡게 보이는 성운이 있어요."}];
+
+const FINAL = [
+  {q:"성간 물질에 대한 설명으로 옳은 것은?",
+   o:["별과 별 사이에 분포하는 가스와 먼지","별의 중심부를 이루는 물질","지구 대기를 이루는 기체","행성의 표면을 이루는 암석"],a:0,
+   e:"별과 별 사이에 분포하는 가스와 먼지를 <b>성간 물질</b>이라고 해요."},
+  {q:"뒤쪽에서 오는 별빛을 차단하여 어둡게 보이는 성운은?",
+   o:["방출 성운","반사 성운","암흑 성운","구상 성단"],a:2,
+   e:"뒤쪽 별빛을 가려서 어둡게 보이는 성운은 <b>암흑 성운</b>이에요. 오리온자리의 말머리성운이 대표적이에요."},
+  {q:"주변 별빛을 흡수하여 가열되면서 스스로 빛을 내는 성운은?",
+   o:["암흑 성운","방출 성운","반사 성운","산개 성단"],a:1,
+   e:"스스로 빛을 내는 성운은 <b>방출 성운</b>이에요. 주로 붉은빛을 띠어요."},
+  {q:"산개 성단과 구상 성단에 대한 설명으로 옳은 것은?",
+   o:["산개 성단은 별들이 공 모양으로 빽빽하게 모여 있다","구상 성단은 주로 온도가 높은 청색 별로 이루어져 있다","산개 성단은 주로 온도가 높은 청색 별로 이루어져 있다","구상 성단은 수십 개의 별로 이루어져 있다"],a:2,
+   e:"<b>산개 성단</b>은 별들이 듬성듬성 모여 있고 주로 고온의 청색 별, <b>구상 성단</b>은 수만~수십만 개의 별이 공 모양으로 빽빽하고 주로 저온의 적색 별로 이루어져 있어요."},
+  {q:"다음 중 성단이 <u>아닌</u> 것은?",
+   o:["플레이아데스 성단","구상 성단 M80","말머리성운","헤라클레스자리 구상 성단(M13)"],a:2,
+   e:"<b>말머리성운</b>은 뒤쪽 별빛을 가리는 암흑 성운이에요. 나머지는 모두 별들이 모인 성단이에요."}];
+
+const KINDS = ["암흑 성운","방출 성운","반사 성운","산개 성단","구상 성단"];
+const LAB = [
+  {draw:"globular", a:4, why:"수많은 별들이 공 모양으로 빽빽하게 모여 있고, 붉거나 노란 별이 많아요."},
+  {draw:"reflection", a:2, why:"밝은 별 주변의 성간 물질이 별빛을 반사해 푸르스름하게 빛나요."},
+  {draw:"emission", a:1, why:"성간 물질이 별빛을 흡수해 가열되면서 스스로 붉게 빛나요."},
+  {draw:"open", a:3, why:"청백색의 밝은 별들이 듬성듬성 모여 있어요."},
+  {draw:"dark", a:0, why:"가운데 검은 부분이 뒤쪽의 별빛과 밝은 성운을 가리고 있어요."}];
+
+const TABLE = [
+  ["성운","암흑 성운","뒤쪽에서 오는 별빛을 차단하여 어둡게 보인다.","말머리성운"],
+  ["성운","방출 성운","주변 별빛을 흡수해 가열되면서 스스로 빛을 낸다. 주로 붉은색.","오리온 대성운"],
+  ["성운","반사 성운","성간 물질이 주변 별빛을 반사하여 밝게 보인다. 주로 파란색.","마녀머리성운"],
+  ["성단","산개 성단","수십~수만 개의 별이 듬성듬성 모여 있다. 주로 고온의 청색 별.","플레이아데스 성단"],
+  ["성단","구상 성단","수만~수십만 개의 별이 공 모양으로 빽빽하다. 주로 저온의 적색 별.","M80, M13"]];
+
+const IMG = name => "https://commons.wikimedia.org/wiki/Special:FilePath/"+encodeURIComponent(name)+"?width=800";
+const FACTS = [
+  {t:"말 머리를 닮은 성운", img:IMG("Horsehead-Hubble.jpg"), sky:"dark", cap:"말머리성운 · NASA, NOAO, ESA, Hubble Heritage Team (STScI/AURA)", b:"오리온자리의 말머리성운은 대표적인 암흑 성운이에요. 뒤쪽의 붉은 방출 성운 빛을 먼지 구름이 가리면서, 말의 머리 모양 그림자처럼 보인답니다."},
+  {t:"자동차 로고가 된 성단", img:IMG("Pleiades_large.jpg"), sky:"open", cap:"플레이아데스 성단 · NASA, ESA, AURA/Caltech", b:"황소자리의 플레이아데스 성단은 맨눈으로도 보이는 산개 성단이에요. 우리 조상들은 ‘좀생이별’이라 불렀고, 일본 이름 ‘스바루’는 자동차 회사 이름과 로고가 되었어요."},
+  {t:"별이 태어나는 ‘창조의 기둥’", img:IMG("Eagle_nebula_pillars.jpg"), sky:"emission", cap:"독수리 성운의 창조의 기둥 · NASA, ESA, STScI, J. Hester & P. Scowen", b:"독수리 성운에는 가스와 먼지가 기둥처럼 솟은 곳이 있어요. 이 짙은 성간 물질 속에서 지금도 새로운 별들이 태어나고 있어 ‘창조의 기둥’이라고 불려요."},
+  {t:"우리 은하의 할아버지 별들", img:IMG("A_Swarm_of_Ancient_Stars_-_GPN-2000-000930.jpg"), sky:"globular", cap:"구상 성단 M80 · NASA, The Hubble Heritage Team (STScI/AURA)", b:"구상 성단의 별들은 대부분 100억 살이 넘는, 우리 은하에서 가장 나이 많은 별들이에요. 나이 든 별이 많아서 온도가 낮은 붉은 별이 많답니다."}];
+
+const norm = s => String(s||"").toLowerCase().replace(/[\s,.·()]/g,"").replace(/(색|입니다|이다|다|이라고|라고)$/,"");
+const anyOf = list => v => list.includes(norm(v));
+const BLANKS = {
+  c1:{ans:"성간 물질", ok:anyOf(["성간물질"])},
+  c2:{ans:"성운", ok:anyOf(["성운"])},
+  c3:{ans:"암흑", ok:anyOf(["암흑","암흑성운"])},
+  c4:{ans:"방출", ok:anyOf(["방출","방출성운","발광"])},
+  c5:{ans:"반사", ok:anyOf(["반사","반사성운"])},
+  c6:{ans:"성단", ok:anyOf(["성단"])},
+  c7:{ans:"산개", ok:anyOf(["산개","산개성단"])},
+  c8:{ans:"청(파란)", ok:anyOf(["청","파란","파랑","푸른","청백"])},
+  c9:{ans:"구상", ok:anyOf(["구상","구상성단"])},
+  c10:{ans:"적(붉은)", ok:anyOf(["적","붉은","빨간","빨강"])}};
+const ONE = {
+  t1:{ans:"산개", ok:anyOf(["산개"])},
+  t2:{ans:"구상", ok:anyOf(["구상"])},
+  t3:{ans:"흩어져", ok:v=>/^(흩어|퍼져|흩)/.test(norm(v))},
+  t4:{ans:"공", ok:anyOf(["공","구","둥근"])},
+  t5:{ans:"파란색", ok:anyOf(["파란","파랑","청","푸른","청백","파란빛"])},
+  t6:{ans:"붉은색", ok:anyOf(["붉은","빨간","빨강","적","붉은빛"])},
+  t7:{ans:"높다", ok:v=>norm(v).startsWith("높")},
+  t8:{ans:"낮다", ok:v=>norm(v).startsWith("낮")},
+  t9:{ans:"젊다", ok:v=>/^(젊|적|어리|어림)/.test(norm(v))},
+  t10:{ans:"많다", ok:v=>/^(많|늙|오래|나이가많)/.test(norm(v))}};
+
+/* ---------- local progress ---------- */
+const KEY = "nebula-cluster-lesson-v1";
+let S = {goal:false,intro:{},introDone:false,concept:{},conceptScore:null,lab:{},labScore:null,final:{},finalScore:null,video:false,one:{},oneScore:null,facts:[],name:"",no:""};
+try{const saved=JSON.parse(localStorage.getItem(KEY)||"null"); if(saved) S=Object.assign(S,saved);}catch(e){}
+if(!Array.isArray(S.facts)) S.facts=[];
+let saveT; const save=()=>{clearTimeout(saveT);saveT=setTimeout(()=>{try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}},250);};
+
+const $ = id => document.getElementById(id);
+const el = (tag,attrs={},kids=[]) => {const n=document.createElement(tag);for(const[k,v]of Object.entries(attrs)){if(k==="text")n.textContent=v;else if(k==="html")n.innerHTML=v;else if(k.startsWith("on"))n.addEventListener(k.slice(2),v);else n.setAttribute(k,v);}for(const c of [].concat(kids))if(c)n.append(c);return n;};
+const factsDone = () => FACTS.every((f,i)=>S.facts[i]);
+const conceptDone = () => S.conceptScore!==null && S.labScore!==null;
+
+/* ---------- stepper ---------- */
+let mySub=null;
+try{mySub=JSON.parse(localStorage.getItem(KEY+"-done")||"null");}catch(e){}
+const stepDone = () => ({
+  "s-goals":S.goal,"s-intro":S.introDone,"s-video":S.video,"s-concept":conceptDone(),"s-final":S.finalScore!==null,
+  "s-oneline":S.oneScore!==null&&factsDone(),"s-submit":!!mySub});
+function renderStepper(){
+  const d=stepDone(); const ol=$("stepper"); ol.textContent="";
+  const smooth=matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth";
+  STEPS.forEach((s,i)=>{ol.append(el("li",{},el("button",{type:"button",class:d[s.id]?"done":"",onclick:()=>$(s.id).scrollIntoView({behavior:smooth})},[el("b",{text:d[s.id]?"✓":String(i+1)}),el("span",{text:s.label})])));});
+  renderChecklist();
+}
+
+/* ---------- goals ---------- */
+$("goalRead").checked=S.goal;
+$("goalRead").addEventListener("change",e=>{S.goal=e.target.checked;save();renderStepper();});
+
+/* ---------- intro quiz ---------- */
+function renderIntro(){
+  const box=$("introQs"); box.textContent="";
+  INTRO.forEach((q,qi)=>{
+    const chosen=S.intro[qi];
+    const wrap=el("div",{class:"q"},[el("p",{class:"q-text",html:`<small>Q${qi+1}</small>`})]);
+    wrap.firstChild.append(document.createTextNode(q.q));
+    const opts=el("div",{class:"opts"});
+    q.o.forEach((o,oi)=>{
+      let cls="opt"; if(chosen!==undefined){ if(oi===q.a)cls+=" right"; else if(oi===chosen)cls+=" wrong"; }
+      const b=el("button",{type:"button",class:cls,text:o,onclick:()=>{S.intro[qi]=oi; S.introDone=Object.keys(S.intro).length===INTRO.length; save(); renderIntro(); renderStepper();}});
+      if(chosen!==undefined)b.disabled=true; opts.append(b);
+    });
+    wrap.append(opts);
+    if(chosen!==undefined) wrap.append(el("p",{class:"explain",html:(chosen===q.a?"<b>정답!</b> ":"<b>아쉬워요.</b> ")+q.e}));
+    box.append(wrap);
+  });
+  const n=Object.keys(S.intro).length, c=INTRO.filter((q,i)=>S.intro[i]===q.a).length;
+  $("introPill").textContent = n===INTRO.length ? `${c} / ${INTRO.length} 정답` : `${n} / ${INTRO.length} 풀이`;
+  $("introPill").className = "pill" + (n===INTRO.length?" good":"");
+}
+
+/* ---------- sky drawings ---------- */
+function rng(seed){return function(){seed|=0;seed=seed+0x6D2B79F5|0;let t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+function gauss(r){let u=0,v=0;while(!u)u=r();while(!v)v=r();return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v);}
+function glow(ctx,x,y,rad,rgb,a){const g=ctx.createRadialGradient(x,y,0,x,y,rad);g.addColorStop(0,`rgba(${rgb},${a})`);g.addColorStop(1,`rgba(${rgb},0)`);ctx.fillStyle=g;ctx.beginPath();ctx.arc(x,y,rad,0,Math.PI*2);ctx.fill();}
+function star(ctx,x,y,s,rgb,bright){if(bright)glow(ctx,x,y,s*5,rgb,.35);ctx.fillStyle=`rgb(${rgb})`;ctx.beginPath();ctx.arc(x,y,s,0,Math.PI*2);ctx.fill();}
+function field(ctx,r,W,H,n,max){for(let i=0;i<n;i++){const a=.25+r()*.6;ctx.fillStyle=`rgba(255,255,255,${a})`;const s=r()*max+.3;ctx.fillRect(r()*W,r()*H,s,s);}}
+function drawSky(cv,kind,seed){
+  const W=300,H=200,dpr=Math.min(window.devicePixelRatio||1,2);
+  cv.width=W*dpr;cv.height=H*dpr;const ctx=cv.getContext("2d");ctx.scale(dpr,dpr);
+  const r=rng(seed);ctx.fillStyle="#05060F";ctx.fillRect(0,0,W,H);
+  ctx.globalCompositeOperation="lighter";
+  if(kind==="emission"){
+    field(ctx,r,W,H,140,1.2);
+    for(let i=0;i<70;i++){const x=W/2+gauss(r)*60,y=H/2+gauss(r)*38;glow(ctx,x,y,15+r()*35,r()<.75?"230,60,90":"255,120,150",.10+r()*.08);}
+    for(let i=0;i<4;i++)star(ctx,W/2+gauss(r)*18,H/2+gauss(r)*12,1.6,"235,240,255",true);
+  }else if(kind==="reflection"){
+    field(ctx,r,W,H,120,1.1);
+    for(let i=0;i<55;i++){const ang=r()*Math.PI*2,d=Math.abs(gauss(r))*45;glow(ctx,W*.48+Math.cos(ang)*d*1.4,H*.5+Math.sin(ang)*d,14+r()*28,"90,140,255",.09+r()*.07);}
+    star(ctx,W*.48,H*.5,3,"235,242,255",true);glow(ctx,W*.48,H*.5,40,"170,200,255",.35);
+  }else if(kind==="dark"){
+    field(ctx,r,W,H,260,1.3);
+    for(let i=0;i<40;i++){glow(ctx,r()*W,H*.25+r()*H*.5,25+r()*40,"220,70,90",.10);}
+    ctx.globalCompositeOperation="source-over";
+    for(let i=0;i<46;i++){const t=i/45,x=W*.25+t*W*.5+gauss(r)*6,y=H*(.95-.55*Math.sin(t*Math.PI))+gauss(r)*6;const rad=14+r()*14;const g=ctx.createRadialGradient(x,y,0,x,y,rad);g.addColorStop(0,"rgba(5,6,15,.95)");g.addColorStop(.7,"rgba(5,6,15,.8)");g.addColorStop(1,"rgba(5,6,15,0)");ctx.fillStyle=g;ctx.beginPath();ctx.arc(x,y,rad,0,Math.PI*2);ctx.fill();}
+    ctx.fillStyle="rgba(5,6,15,.92)";ctx.fillRect(W*.3,H*.82,W*.4,H*.18);
+  }else if(kind==="open"){
+    field(ctx,r,W,H,160,1.1);
+    for(let i=0;i<24;i++){const x=W/2+gauss(r)*55,y=H/2+gauss(r)*35;star(ctx,x,y,1.3+r()*1.8,r()<.8?"175,205,255":"240,245,255",true);}
+    for(let i=0;i<10;i++)glow(ctx,W/2+gauss(r)*45,H/2+gauss(r)*30,25,"100,140,255",.05);
+  }else if(kind==="globular"){
+    field(ctx,r,W,H,110,1);
+    glow(ctx,W/2,H/2,55,"255,200,130",.35);
+    for(let i=0;i<1800;i++){const d=Math.abs(gauss(r))*22*(r()<.15?2.2:1),ang=r()*Math.PI*2;const x=W/2+Math.cos(ang)*d,y=H/2+Math.sin(ang)*d;const c=r()<.5?"255,205,140":(r()<.6?"255,150,110":"255,235,200");ctx.fillStyle=`rgba(${c},${.35+r()*.5})`;const s=.6+r()*1.1;ctx.fillRect(x,y,s,s);}
+  }
+  ctx.globalCompositeOperation="source-over";
+}
+
+/* ---------- lab ---------- */
+function renderLab(){
+  const g=$("labGrid"); g.textContent=""; const graded=S.labScore!==null;
+  LAB.forEach((item,i)=>{
+    const ch=S.lab[i];
+    const card=el("div",{class:"sky"+(graded?(ch===item.a?" right":" wrong"):"")});
+    card.append(el("div",{class:"sky-cap"},[el("b",{text:"ABCDE"[i]}),el("span",{text:graded?(ch===item.a?"정답":"오답"):(ch!==undefined?"선택함":"고르세요")})]));
+    const cv=el("canvas",{role:"img","aria-label":`밤하늘 모습 ${"ABCDE"[i]}`}); card.append(cv); drawSky(cv,item.draw,101+i*37);
+    const chips=el("div",{class:"chips"});
+    KINDS.forEach((k,ki)=>{
+      let cls="chip"; if(graded){if(ki===item.a)cls+=" right";else if(ki===ch)cls+=" wrong";}else if(ki===ch)cls+=" sel";
+      const b=el("button",{type:"button",class:cls,text:k,"aria-pressed":String(ki===ch),onclick:()=>{S.lab[i]=ki;save();renderLab();}});
+      if(graded)b.disabled=true; chips.append(b);
+    });
+    card.append(chips);
+    if(graded) card.append(el("p",{class:"sky-why",html:`<span class="kind-tag">${KINDS[item.a]}</span>`},[document.createTextNode(item.why)]));
+    g.append(card);
+  });
+  const n=Object.keys(S.lab).length;
+  $("labCheck").disabled = graded || n<LAB.length; $("labCheck").hidden=graded; $("labRetry").hidden=!graded;
+  if(graded){$("labResult").textContent=`${S.labScore} / ${LAB.length} 정답`;$("labPill").textContent=`${S.labScore} / ${LAB.length}`;$("labPill").className="pill"+(S.labScore===LAB.length?" good":" warn");}
+  else{$("labResult").textContent=n<LAB.length?`${n} / ${LAB.length} 선택`:"모두 골랐어요. 확인해 보세요.";$("labPill").textContent=`${n} / ${LAB.length}`;$("labPill").className="pill";}
+}
+$("labCheck").addEventListener("click",()=>{S.labScore=LAB.filter((it,i)=>S.lab[i]===it.a).length;save();renderLab();renderStepper();});
+$("labRetry").addEventListener("click",()=>{S.lab={};S.labScore=null;save();renderLab();renderStepper();});
+
+const tb=$("sumTable");
+TABLE.forEach(([g,k,f,ex])=>{tb.append(el("tr",{},[el("td",{text:g}),el("td",{},el("b",{text:k})),el("td",{class:"wrap",text:f}),el("td",{text:ex})]));});
+
+/* ---------- blanks ---------- */
+function setupBlanks(attr,store){
+  document.querySelectorAll(`[data-${attr}]`).forEach(inp=>{
+    const k=inp.dataset[attr]; inp.id="blank-"+k; inp.value=store[k]||"";
+    inp.addEventListener("input",()=>{store[k]=inp.value;inp.classList.remove("right","wrong");save();});
+  });
+}
+function gradeBlanks(attr,defs,store){
+  let c=0;const keys=Object.keys(defs);
+  keys.forEach(k=>{const inp=document.querySelector(`[data-${attr}="${k}"]`);const ok=defs[k].ok(store[k]||"");inp.classList.toggle("right",ok);inp.classList.toggle("wrong",!ok);if(ok)c++;});
+  return {score:c,total:keys.length};
+}
+setupBlanks("b",S.concept); setupBlanks("o",S.one);
+function pill(id,r){$(id).textContent=`${r.score} / ${r.total}`;$(id).className="pill"+(r.score===r.total?" good":" warn");}
+
+$("conceptCheck").addEventListener("click",()=>{
+  const r=gradeBlanks("b",BLANKS,S.concept); S.conceptScore=r.score; save();
+  $("conceptResult").textContent=`${r.score} / ${r.total} 정답`+(r.score===r.total?" · 완벽해요!":" · 틀린 칸을 고쳐 다시 채점해 보세요.");
+  pill("conceptPill",r); $("conceptReveal").hidden = r.score===r.total; renderStepper();
+});
+$("conceptReveal").addEventListener("click",()=>{
+  Object.entries(BLANKS).forEach(([k,d])=>{const inp=document.querySelector(`[data-b="${k}"]`);if(!d.ok(S.concept[k])){inp.placeholder=d.ans;inp.value="";S.concept[k]="";inp.classList.remove("wrong");}});
+  $("conceptResult").textContent="빈칸에 흐리게 보이는 정답을 직접 써 보고 다시 채점하세요."; save();
+});
+if(S.conceptScore!==null) pill("conceptPill",gradeBlanks("b",BLANKS,S.concept));
+
+$("oneCheck").addEventListener("click",()=>{
+  const r=gradeBlanks("o",ONE,S.one); S.oneScore=r.score; save();
+  $("oneResult").textContent = r.score===r.total ? "완벽해요! 두 성단의 차이를 한눈에 정리했어요." : `${r.score} / ${r.total} 정답 · 틀린 칸을 고쳐 다시 채점해 보세요.`;
+  pill("onePill",r); renderStepper();
+});
+if(S.oneScore!==null) pill("onePill",gradeBlanks("o",ONE,S.one));
+
+/* ---------- final quiz ---------- */
+function renderFinal(){
+  const box=$("finalQs"); box.textContent=""; const graded=S.finalScore!==null;
+  FINAL.forEach((q,qi)=>{
+    const ch=S.final[qi];
+    const wrap=el("div",{class:"q"},[el("p",{class:"q-text",html:`<small>${qi+1}.</small>${q.q}`})]);
+    const opts=el("div",{class:"opts"});
+    q.o.forEach((o,oi)=>{
+      let cls="opt";
+      if(graded){if(oi===q.a)cls+=" right";else if(oi===ch)cls+=" wrong";}else if(oi===ch)cls+=" sel";
+      const b=el("button",{type:"button",class:cls,text:`${"①②③④"[oi]} ${o}`,"aria-pressed":String(oi===ch),onclick:()=>{S.final[qi]=oi;save();renderFinal();}});
+      if(graded)b.disabled=true; opts.append(b);
+    });
+    wrap.append(opts);
+    if(graded) wrap.append(el("p",{class:"explain",html:(ch===q.a?"<b>정답</b> · ":"<b>오답</b> · ")+q.e}));
+    box.append(wrap);
+  });
+  const answered=Object.keys(S.final).length;
+  $("finalCheck").disabled = graded || answered<FINAL.length;
+  $("finalCheck").hidden = graded; $("finalRetry").hidden = !graded;
+  if(graded){$("finalResult").textContent=`${S.finalScore} / ${FINAL.length} 정답`;pill("finalPill",{score:S.finalScore,total:FINAL.length});}
+  else{$("finalResult").textContent=answered<FINAL.length?`${answered} / ${FINAL.length} 문항 선택`:"모두 골랐어요. 채점해 보세요.";$("finalPill").textContent="5문항";$("finalPill").className="pill";}
+}
+$("finalCheck").addEventListener("click",()=>{S.finalScore=FINAL.filter((q,i)=>S.final[i]===q.a).length;save();renderFinal();renderStepper();});
+$("finalRetry").addEventListener("click",()=>{S.final={};S.finalScore=null;save();renderFinal();renderStepper();});
+
+/* ---------- fun facts ---------- */
+function renderFacts(){
+  const box=$("facts"); box.textContent="";
+  FACTS.forEach((f,i)=>{
+    const id="fact-"+i;
+    const cb=el("input",{type:"checkbox",id}); cb.checked=!!S.facts[i];
+    cb.addEventListener("change",()=>{S.facts[i]=cb.checked;save();renderFacts();renderStepper();});
+    const fig=el("figure",{class:"fact-fig"});
+    const img=el("img",{src:f.img,alt:f.cap.split(" · ")[0],loading:"lazy",decoding:"async",referrerpolicy:"no-referrer"});
+    img.addEventListener("error",()=>{const cv=el("canvas",{role:"img","aria-label":f.cap.split(" · ")[0]+" 그림"});img.replaceWith(cv);drawSky(cv,f.sky,500+i);cap.textContent=f.cap.split(" · ")[0]+" (사진을 불러오지 못해 그림으로 보여 줘요)";});
+    const cap=el("figcaption",{text:"사진: "+f.cap});
+    fig.append(img,cap);
+    box.append(el("article",{class:"fact"+(S.facts[i]?" read":"")},[
+      fig,
+      el("span",{class:"fact-num",text:String(i+1)}),
+      el("div",{class:"fact-body"},[el("h4",{text:f.t}),el("p",{text:f.b}),
+        el("label",{class:"check",for:id},[cb,document.createTextNode("읽었어요")])])]));
+  });
+  const n=FACTS.filter((f,i)=>S.facts[i]).length;
+  $("factPill").textContent=`${n} / ${FACTS.length} 읽음`;
+  $("factPill").className="pill"+(n===FACTS.length?" good":"");
+}
+
+/* ---------- video (config.js) ---------- */
+const CFG = window.LESSON_CONFIG || {};
+const VIDEOS = Array.isArray(CFG.videos) ? CFG.videos : [];
+$("videoWatched").checked=S.video;
+$("videoWatched").addEventListener("change",e=>{S.video=e.target.checked;save();renderStepper();});
+function youtubeId(u){
+  try{
+    const x=new URL(u); const h=x.hostname.replace(/^www\.|^m\./,"");
+    let id="";
+    if(h==="youtu.be") id=x.pathname.slice(1);
+    else if(h.endsWith("youtube.com")||h.endsWith("youtube-nocookie.com")){
+      id=x.searchParams.get("v")||"";
+      const m=x.pathname.match(/\/(embed|shorts|live)\/([^/?]+)/); if(!id&&m) id=m[2];
+    }
+    id=id.split(/[?&/]/)[0];
+    return /^[A-Za-z0-9_-]{6,20}$/.test(id)?id:null;
+  }catch(e){return null;}
+}
+function renderVideo(){
+  const a=$("videoArea"); a.textContent="";
+  const list=VIDEOS.filter(v=>v&&(String(v.youtube||"").trim()||String(v.file||"").trim()));
+  if(!list.length){a.append(el("div",{class:"empty",text:"아직 영상이 준비되지 않았어요. 수업 시간에 선생님 안내를 기다려 주세요."}));return;}
+  const wrap=el("div",{class:"video-list"});
+  list.forEach(v=>{
+    const item=el("div",{class:"video-item"});
+    if(v.title) item.append(el("h3",{style:"font-size:20px",text:v.title}));
+    if(v.note) item.append(el("p",{class:"lead",text:v.note}));
+    const yt=String(v.youtube||"").trim(), file=String(v.file||"").trim();
+    const id=yt?youtubeId(yt):null;
+    if(id){
+      item.append(el("div",{class:"video-box"},el("iframe",{src:"https://www.youtube.com/embed/"+id+"?rel=0",title:v.title||"학습 영상",allow:"accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share",allowfullscreen:"",referrerpolicy:"strict-origin-when-cross-origin",loading:"lazy"})));
+      item.append(el("a",{href:"https://www.youtube.com/watch?v="+id,target:"_blank",rel:"noopener noreferrer",class:"hint",text:"영상이 재생되지 않으면 여기를 눌러 유튜브에서 보세요."}));
+    }else if(yt){
+      item.append(el("div",{class:"empty",text:"영상 주소를 인식하지 못했어요. 선생님께 알려 주세요."}));
+    }
+    if(file){
+      const vid=el("video",{controls:"",preload:"metadata",playsinline:"",src:file});
+      const box=el("div",{class:"video-box"},vid);
+      vid.addEventListener("error",()=>box.replaceWith(el("div",{class:"empty",text:"영상 파일을 불러오지 못했어요. 선생님께 알려 주세요."})));
+      item.append(box);
+    }
+    wrap.append(item);
+  });
+  a.append(wrap);
+}
+
+/* ---------- complete ---------- */
+const $name=$("stuName"),$no=$("stuNo");
+$name.value=S.name;$no.value=S.no;
+$name.addEventListener("input",()=>{S.name=$name.value;save();renderChecklist();});
+$no.addEventListener("input",()=>{S.no=$no.value;save();renderChecklist();});
+function renderChecklist(){
+  const items=[["학습목표",S.goal],["도입퀴즈",S.introDone],["영상 시청",S.video],["개념 빈칸",S.conceptScore!==null],["사진 분류",S.labScore!==null],["정리퀴즈",S.finalScore!==null],["한줄 정리",S.oneScore!==null],["우주 이야기",factsDone()],["이름·학번",!!S.name.trim()&&!!S.no.trim()]];
+  const ul=$("checklist"); ul.textContent="";
+  items.forEach(([n,ok])=>ul.append(el("li",{class:ok?"ok":""},[document.createTextNode(ok?"✓ ":"○ "),document.createTextNode(n)])));
+  const missing=items.filter(i=>!i[1]).map(i=>i[0]);
+  $("submitBtn").disabled = missing.length>0;
+  $("submitHint").textContent = missing.length ? `남은 항목: ${missing.join(", ")}` : "모든 학습을 마쳤어요!";
+}
+function fmtTime(iso){return new Date(iso).toLocaleString("ko-KR",{month:"long",day:"numeric",hour:"2-digit",minute:"2-digit"});}
+function renderStatus(){
+  const box=$("statusBox"); box.textContent="";
+  if(!mySub) return;
+  box.append(el("div",{class:"status ok"},[
+    el("b",{text:"✓ 학습 완료"}),
+    el("span",{text:`${fmtTime(mySub.doneAt)} · ${mySub.name} (${mySub.classNo}) · 정리퀴즈 ${mySub.final}`}),
+    el("div",{class:"row",style:"margin-top:6px"},el("button",{type:"button",class:"btn small ghost",text:"완료 화면 다시 보기",onclick:()=>showDone(mySub)}))]));
+}
+function showDone(rec){
+  const g=$("doneGrid"); g.textContent="";
+  [["이름",rec.name],["학번",rec.classNo],["도입퀴즈",rec.intro],["영상 시청",rec.video],["개념 빈칸",rec.concept],["사진 분류",rec.lab],["정리퀴즈",rec.final],["한줄 정리",rec.oneLine],["우주 이야기",rec.facts],["완료 시각",fmtTime(rec.doneAt)]]
+    .forEach(([k,v])=>{g.append(el("dt",{text:k}),el("dd",{text:v}));});
+  const d=$("doneDialog");
+  if(typeof d.showModal==="function"){ if(!d.open) d.showModal(); } else d.setAttribute("open","");
+  $("doneClose").focus();
+}
+$("doneClose").addEventListener("click",()=>{const d=$("doneDialog");if(d.close)d.close();else d.removeAttribute("open");});
+$("submitBtn").addEventListener("click",()=>{
+  const rec={
+    doneAt:new Date().toISOString(),
+    name:S.name.trim().slice(0,30), classNo:S.no.trim().slice(0,30),
+    intro:`${INTRO.filter((q,i)=>S.intro[i]===q.a).length} / ${INTRO.length}`,
+    video:S.video?"시청 완료":"-",
+    concept:`${S.conceptScore??0} / ${Object.keys(BLANKS).length}`,
+    lab:`${S.labScore??0} / ${LAB.length}`,
+    final:`${S.finalScore??0} / ${FINAL.length}`,
+    oneLine:`${S.oneScore??0} / ${Object.keys(ONE).length}`,
+    facts:`${FACTS.filter((f,i)=>S.facts[i]).length} / ${FACTS.length} 읽음`
+  };
+  mySub=rec; try{localStorage.setItem(KEY+"-done",JSON.stringify(rec));}catch(e){}
+  renderStatus(); renderStepper(); showDone(rec);
+});
+
+/* ---------- boot ---------- */
+document.querySelectorAll(".cmp-sky").forEach((cv,i)=>drawSky(cv,cv.dataset.sky,300+i));
+renderIntro(); renderVideo(); renderLab(); renderFinal(); renderFacts(); renderStepper(); renderStatus();
+})();
+</script>
+</body>
+</html>

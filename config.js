@@ -15,7 +15,7 @@ window.LESSON_CONFIG = {
     {
       title: "성운과 성단",
       youtube: "",
-      file: "",
+      file: "nebula-starcluster.mp4",
       note: "영상을 보며 성운과 성단의 종류와 특징을 찾아보세요."
     }
   ]
